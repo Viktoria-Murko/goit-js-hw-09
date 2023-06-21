@@ -47,7 +47,7 @@ function convertMs(ms) {
   const hour = minute * 60;
   const day = hour * 24;
 
-  const days = addLeadingZero(Math.floor(ms / day));
+  const days = Math.floor(ms / day);
   const hours = addLeadingZero(Math.floor((ms % day) / hour));
   const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
   const seconds = addLeadingZero(
@@ -79,12 +79,8 @@ const timer = {
       let inputDate = new Date(refs.dataTimePicker.value);
       const deltaTime = inputDate.getTime() - currentDate;
       const time = convertMs(deltaTime);
-      // updateTimerComponents(time);
+      updateTimerComponents(time);
       console.log(time);
-      timerComponents.days.textContent = time.days;
-      timerComponents.hours.textContent = time.hours;
-      timerComponents.minutes.textContent = time.minutes;
-      timerComponents.seconds.textContent = time.seconds;
 
       if (deltaTime <= 0) {
         this.stop();
