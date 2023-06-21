@@ -25,13 +25,12 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    if (selectedDates[0].getTime() < currentDate) {
-      Notify.warning('Please choose a date in the future');
-      return;
-    } else {
+    if (selectedDates[0].getTime() > currentDate) {
       refs.startBtn.disabled = false;
+    } else {
+      refs.startBtn.disabled = true;
+      Notify.warning('Please choose a date in the future');
     }
-    return selectedDates[0];
   },
 };
 
@@ -64,10 +63,6 @@ function updateTimerComponents({ days, hours, minutes, seconds }) {
   timerComponents.seconds.textContent = seconds;
 }
 
-refs.startBtn.addEventListener('click', () => {
-  timer.start();
-});
-
 const timer = {
   isActive: false,
   start() {
@@ -77,8 +72,8 @@ const timer = {
     this.isActive = true;
     intervalId = setInterval(() => {
       let inputDate = new Date(refs.dataTimePicker.value);
-      const deltaTime = inputDate.getTime() - currentDate;
-      const time = convertMs(deltaTime);
+      let deltaTime = inputDate.getTime() - currentDate;
+      let time = convertMs(deltaTime);
       updateTimerComponents(time);
       console.log(time);
 
@@ -92,3 +87,7 @@ const timer = {
     this.isActive = false;
   },
 };
+
+refs.startBtn.addEventListener('click', () => {
+  timer.start();
+});
