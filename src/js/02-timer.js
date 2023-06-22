@@ -51,15 +51,7 @@ function convertMs(ms) {
   const seconds = addLeadingZero(
     Math.floor((((ms % day) % hour) % minute) / second)
   );
-
   return { days, hours, minutes, seconds };
-}
-
-function updateTimerComponents({ days, hours, minutes, seconds }) {
-  timerComponents.days.textContent = days;
-  timerComponents.hours.textContent = hours;
-  timerComponents.minutes.textContent = minutes;
-  timerComponents.seconds.textContent = seconds;
 }
 
 const timer = {
