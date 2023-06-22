@@ -15,7 +15,6 @@ const timerComponents = {
   seconds: document.querySelector('span[data-seconds]'),
 };
 
-const currentDate = Date.now();
 refs.startBtn.disabled = true;
 let intervalId = null;
 
@@ -25,7 +24,7 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    if (selectedDates[0].getTime() > currentDate) {
+    if (selectedDates[0].getTime() > Date.now()) {
       refs.startBtn.disabled = false;
     } else {
       refs.startBtn.disabled = true;
@@ -65,6 +64,12 @@ function updateTimerComponents({ days, hours, minutes, seconds }) {
 
 const timer = {
   isActive: false,
+  updateTimerComponents({ days, hours, minutes, seconds }) {
+    timerComponents.days.textContent = days;
+    timerComponents.hours.textContent = hours;
+    timerComponents.minutes.textContent = minutes;
+    timerComponents.seconds.textContent = seconds;
+  },
   start() {
     if (this.isActive) {
       return;
@@ -72,12 +77,12 @@ const timer = {
     this.isActive = true;
     intervalId = setInterval(() => {
       let inputDate = new Date(refs.dataTimePicker.value);
-      let deltaTime = inputDate.getTime() - currentDate;
+      let deltaTime = inputDate.getTime() - Date.now();
       let time = convertMs(deltaTime);
-      updateTimerComponents(time);
+      this.updateTimerComponents(time);
       console.log(time);
 
-      if (deltaTime <= 0) {
+      if (deltaTime <= 1000) {
         this.stop();
       }
     }, 1000);
